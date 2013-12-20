@@ -37,15 +37,21 @@ I have 3 kids. They are Daniel, Paul, Mark.
 THEY ARE DANIEL PAUL MARK 
 ```
 
-Basically, what **wash** does here is to render the input _source_ string with the provided _context_ variables.
+So, basically, what **wash** does here is to render the input _source_ string with the provided _context_ variables.
 
+- `{{ name }}` prints out the value of `name` variable (_context.name_). It becomes `John` in this example.
+- `{{ age }}` does the same to `age` variable. But this time it's a number.
+- `{% if age > 20 %} ... {% endif %}` prints (or execute) the string between `if` and `endif` tags only when `name` is above `20`.
+- `{{ len(kids) }}` prints the number of elements in `kids` collection. The collection can be an array or an object. In this example, `kids` is an array with 3 string elements. So this outputs `3`.
+- `{{ join(kids, ", ") }}` joins the elements of `kids` using separator of `", "`. 
+- `{% for k in kids %} ... {% endfor %}` iterates `kids` collection. Inside this loop, you can access each element using `k` variable. So, `{{ k.value }}` evaluates to the value of the current element.
+- `{{ upper(k.value) }}` converts the value of `k` to uppercase characters.
 
-## Features
+For more details on the template syntax, please see [Template Syntax](#template-syntax) below.
 
-Wash has 
+## Why Wash?
 
-- Safety
-- Can be controlled
+...
 
 ## References
 
@@ -118,11 +124,20 @@ console.log(precompiled.render(context)); // prints "some outputs"
 
 ## Template Syntax
 
-### Evaluation
+### Expressions
+
+You can construct expressions using the following elements.
+
+- Literals: _**"texts"**_, _**numbers**_, _**true**_, _**false**_
+- Operators: **+**, **-**, __*__, **/**, **==**, **!=**, **>=**, **<=**, **>**, **<**, **||**, **&&**, **!**
+- Parenthesis: **(**, **)**
+- Variables: those provided as a _context_ parameter to rendering functions
+
+### Evaluation 
 
 _**{{** expression **}}**_
 
-_expression_ is evaluated and its value is printed.
+Evaluates _expression_ and replace with the outcome.
 
 ```javascript
 var wash = require('wash');
@@ -130,7 +145,12 @@ var output = wash.render('{{ foo }}', { foo: 'bar' }));
 assert(output === 'bar');
 ```
 
-**Conditional**: `{% if expression %} body {% endif %}` evalues the _expression_ and prints out _body_ only when _expression_ evaluates to _true_.
+### Conditional
+
+_**{%** **if** expression **%}**_
+_**{%** **elif** expression **%}**_
+_**{%** **else** **%}**_
+_**{%** **endif** **%}**_
 
 ```javascript
 var wash = require('wash');
@@ -140,3 +160,28 @@ var output = wash.render(
 assert(output === 'foo is true');
 ```
 
+### Loop
+
+_**{%** **for** var **in** expression **%}**_
+_**{%** **endfor** **%}**_
+
+### Built-in Functions
+
+- range(start, stop, step)
+- lower(str)
+- upper(str)
+- join(collection, delim)
+- len(collection)
+- reverse(collection)
+- sort(collection, reverse)
+- isArray(x)
+- isObject(x)
+- slice(collection, start, stop)
+
+## Wash in Production
+
+- [gist.sh](http://gist.sh): _(currently in beta phase)_ 
+
+## License
+
+[MIT license](https://raw.github.com/d5/wash/master/LICENSE)
