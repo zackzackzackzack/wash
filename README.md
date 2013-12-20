@@ -1,6 +1,6 @@
 # Wash 
 
-It is a safe template rendering engine for Node.
+A safe template rendering engine for Node.
 
 [![NPM](https://nodei.co/npm/wash.png?compact=true)](https://nodei.co/npm/wash/)
 
@@ -51,7 +51,10 @@ For more details on the template syntax, please see [Template Syntax](#template-
 
 ## Why Wash?
 
-...
+Wash is safe. You can run untrusted template codes in Wash.
+
+- Wash doew not allow the template code to access external variables, modules, or functions.
+- _(work in progress)_ Wash can restrict the number of iterations or the number of elements in collection.
 
 ## References
 
@@ -152,18 +155,40 @@ _**{%** **elif** expression **%}**_
 _**{%** **else** **%}**_
 _**{%** **endif** **%}**_
 
-```javascript
-var wash = require('wash');
-var output = wash.render(
-    '{% if foo %}foo is true{% else %}foo is false{% endif %}', 
-    { foo: true }));
-assert(output === 'foo is true');
+Run the code conditionally. Wash follows the commonly used approaches here:
+
 ```
+{% if expr1 %}
+  executed when expr1 is true.
+{% elif expr2 %}
+  executed when expr1 was false and expr2 is true.
+{% elif ... %}
+  ...
+{% elif exprN %}
+  executed when expr1, expr2, ... exprN-1 were all false and exprN is true.
+{% else %}
+  executed when expr1, expr2, ... exprN were all false.
+{% endif %}
+```
+
+Nested conditionals are also allowed.
 
 ### Loop
 
 _**{%** **for** var **in** expression **%}**_
 _**{%** **endfor** **%}**_
+
+You can iterate over a collection, _expression_. The collection can be an object. If the collection is an array, Wash internally convert it to an object with indices as its keys.
+
+You can access the current element using _var_ object, which contains the following properties.
+
+- key: the key name of property
+- value: the value of property
+- index: an index starting from 0
+- _(work in progress)_ isFirst: true if it is the first element
+- _(work in progress)_ isLast: true if it is the last element
+
+Nested loops are also allowed.
 
 ### Built-in Functions
 
