@@ -1,4 +1,4 @@
-var t = require('../lib/template'),
+var t = require('../lib/index'),
     expect = require('expect.js');
 
 var ctx = {
@@ -20,7 +20,7 @@ var ctx = {
     arr: [9, 4, 3, 8, 5]
 };
 
-describe('template', function() {
+describe('basic', function() {
     describe('empty input', function() {
         it('empty', function() { 
             expect(t.render('', ctx)).to.equal('');
