@@ -118,6 +118,8 @@ describe('basic', function() {
         describe('constants', function() {
             it('can be empty', function() {
                 expect(t.render('{{}}', ctx)).to.equal('');
+                expect(t.render('{{ }}', ctx)).to.equal('');
+                expect(t.render('{{\t}}', ctx)).to.equal('');
                 expect(t.render('{{ () }}', ctx)).to.equal('');
                 expect(t.render('{{ (   ) }}', ctx)).to.equal('');
             });
