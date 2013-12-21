@@ -139,6 +139,7 @@ describe('basic', function() {
             it('can be string', function() {
                 expect(t.render('{{ "foo bar" }}', ctx)).to.equal('foo bar');
                 expect(t.render('{{ ("foo bar") }}', ctx)).to.equal('foo bar');
+                //expect(t.render('{{ "foobar"[3] }}', ctx)).to.equal('b');
             });
 
             it('cannot be multiple constants without operators', function() {
@@ -221,15 +222,39 @@ describe('basic', function() {
                 expect(t.render('{{ notDefined }}', ctx)).to.equal('');
             });
 
+/*
+            it('array index', function() {
+                expect(t.render('{{ arr[1] }}', ctx)).to.equal('4');
+                expect(t.render('{{ arr[10] }}', ctx)).to.equal('');
+                expect(t.render('{% for v in arr[1] %}a{% endfor %]', ctx)).to.equal('aaaa');
+                expect(t.render('{% for v in arr[10] %}a{% endfor %]', ctx)).to.equal('');
+            });
+*/
             it('dots', function() {
                 expect(t.render('{{ comp.a }}', ctx)).to.equal('123');
                 expect(t.render('{{ comp.c.p1 }}', ctx)).to.equal('test');
                 expect(t.render('{{ comp.a + comp.b }}', ctx)).to.equal('123456');
 
-                expect(t.render('{{ comp.heck }}', ctx)).to.equal('');
-                expect(t.render('{{ comp.c.heck }}', ctx)).to.equal('');
-                expect(t.render('{{ comp.heck.heck }}', ctx)).to.equal('');
+                expect(t.render('{{ comp.notDefined }}', ctx)).to.equal('');
+                expect(t.render('{{ comp.c.notDefined }}', ctx)).to.equal('');
+                expect(t.render('{{ comp.notDefined.notDefined }}', ctx)).to.equal('');
             });
+/*
+            it('object form', function() {
+                expect(t.render('{{ comp["a"] }}', ctx)).to.equal('123');
+                expect(t.render('{{ comp["c"]["p1"] }}', ctx)).to.equal('test');
+                expect(t.render('{{ comp["a"] + comp["b"] }}', ctx)).to.equal('123456');
+
+                expect(t.render('{{ comp["notDefined"] }}', ctx)).to.equal('');
+                expect(t.render('{{ comp["c"]["notDefined"] }}', ctx)).to.equal('');
+                expect(t.render('{{ comp["notDefined"]["notDefined"] }}', ctx)).to.equal('');
+            });
+
+            it('mixed form', function() {
+                expect(t.render('{{ comp["c"].p1 }}', ctx)).to.equal('test');
+                expect(t.render('{{ comp["a"] + comp.b }}', ctx)).to.equal('123456');
+            });
+*/
         });
         
         describe('functions', function() { 
