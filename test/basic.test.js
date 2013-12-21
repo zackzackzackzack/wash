@@ -126,6 +126,8 @@ describe('basic', function() {
                 expect(t.render('{{ 10 }}', ctx)).to.equal('10');
                 expect(t.render('{{ (10) }}', ctx)).to.equal('10');
                 expect(t.render('{{ 10.2 }}', ctx)).to.equal('10.2');
+                expect(t.render('{{ 10.00 }}', ctx)).to.equal('10');
+                expect(t.render('{{ 0.002 }}', ctx)).to.equal('0.002');
             });
 
             it('can be boolean', function() {

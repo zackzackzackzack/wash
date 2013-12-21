@@ -30,6 +30,6 @@
   },
   "homepage": "https://github.com/d5/wash",
   "scripts": {
-    "test": "node_modules/.bin/mocha tests --reporter spec"
+    "test": "node_modules/.bin/mocha --reporter spec"
   }
 }
