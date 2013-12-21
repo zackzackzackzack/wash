@@ -1,7 +1,7 @@
 {
   "name": "wash",
   "description": "a safe template rendering engine",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "index",
   "author": { 
     "name" : "Daniel Kang",
