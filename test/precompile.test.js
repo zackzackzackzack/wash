@@ -1,4 +1,4 @@
-var t = require('../lib/index'),
+var t = require('../lib/wash'),
     expect = require('expect.js');
 
 describe('precompile', function() {
