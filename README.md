@@ -125,6 +125,22 @@ var context = { foo: 'bar' };
 console.log(precompiled.render(context)); // prints "some outputs"
 ```
 
+### wash.setOption(name, value)
+
+This sets a Wash option. See [Options](#options) for more detail.
+
+```javascript
+wash.setOption('throwsOnErrors', true);
+```
+
+### wash.getOption(name)
+
+This returns the current value of option named _name_. See [Options](#options) for more detail.
+
+### wash.resetOptions()
+
+This resets all options to the default values. See [Options](#options) for more detail.
+
 ## Template Syntax
 
 ### Expressions
@@ -202,6 +218,13 @@ Nested loops are also allowed.
 - isArray(x)
 - isObject(x)
 - slice(collection, start, stop)
+
+## Options
+
+### throwsOnErrors
+
+- _true_: an exception will be thrown if an error occurs while precompiling or rendering.
+- _false_: _(default)_ errors are simply ignored. 
 
 ## Wash in Production
 
