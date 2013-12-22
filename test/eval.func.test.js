@@ -15,14 +15,14 @@ describe('eval', function() {
         });
 
         describe('global functions', function() {
-            expect('{{ Math.abs(-123) }}', '', function() { opt('throwsOnRuntimeErrors', false) });
-            expectException('{{ Math.abs(-123) }}', function() { opt('throwsOnRuntimeErrors', true) });
-            expect('{{ process.memoryUsage() }}', '', function() { opt('throwsOnRuntimeErrors', false) });
-            expectException('{{ process.memoryUsage() }}', function() { opt('throwsOnRuntimeErrors', true) });
-            expect('{{ JSON.parse("{}") }}', '', function() { opt('throwsOnRuntimeErrors', false) });
-            expectException('{{ JSON.parse("{}") }}', function() { opt('throwsOnRuntimeErrors', true) });
-            expect('{{ parseInt("123") }}', '', function() { opt('throwsOnRuntimeErrors', false) });
-            expectException('{{ parseInt("123") }}', function() { opt('throwsOnRuntimeErrors', true) });
+            expect('{{ Math.abs(-123) }}', '', function() { opt('throwsOnErrors', false) });
+            expectException('{{ Math.abs(-123) }}', function() { opt('throwsOnErrors', true) });
+            expect('{{ process.memoryUsage() }}', '', function() { opt('throwsOnErrors', false) });
+            expectException('{{ process.memoryUsage() }}', function() { opt('throwsOnErrors', true) });
+            expect('{{ JSON.parse("{}") }}', '', function() { opt('throwsOnErrors', false) });
+            expectException('{{ JSON.parse("{}") }}', function() { opt('throwsOnErrors', true) });
+            expect('{{ parseInt("123") }}', '', function() { opt('throwsOnErrors', false) });
+            expectException('{{ parseInt("123") }}', function() { opt('throwsOnErrors', true) });
         });
     });
 });
