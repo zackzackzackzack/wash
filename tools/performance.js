@@ -6,6 +6,7 @@ var iterations = 500000;
 var evalSource = '{{ foo }}';
 var ifSource = '{% if bar %}bar is true{% else %}bar is false{% endif %}'
 var forSource = '{% for i in r %}{{ i.value }}{% endfor %}';
+var forObjSource = '{% for i in a %}{{ i.value }}{% endfor %}';
 
 var longSource = fs.readFileSync(__dirname + '/sample.txt', { encoding: "utf8" });
 
@@ -13,6 +14,7 @@ var ctx = {
     foo: 'foo',
     bar: true,
     r: [0, 1, 2, 3],
+    a: { b: 'b', c: 'c', d: 'd' },
     longFoo: 'foooooooooooooooooooooooooooooooooooooooooooooooooooooo'
 };
 
@@ -61,6 +63,23 @@ console.log('  no-precompile:\t%d secs\t%d nanosecs.', t[0], t[1]);
 
 var t = process.hrtime();
 var precompiled = wash.precompile(forSource);
+for(var i=0; i<iterations; ++i) {
+    wash.render(precompiled, ctx);
+}
+t = process.hrtime(t);
+console.log('  precompiled:\t\t%d secs\t%d nanosecs.', t[0], t[1]);
+
+console.log('for (obj) x %d', iterations);
+
+var t = process.hrtime();
+for(var i=0; i<iterations; ++i) {
+    wash.render(forObjSource, ctx);
+}
+t = process.hrtime(t);
+console.log('  no-precompile:\t%d secs\t%d nanosecs.', t[0], t[1]);
+
+var t = process.hrtime();
+var precompiled = wash.precompile(forObjSource);
 for(var i=0; i<iterations; ++i) {
     wash.render(precompiled, ctx);
 }
