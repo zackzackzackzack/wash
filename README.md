@@ -28,16 +28,7 @@ var output = wash.render(source, context);
 console.log(output);
 ```
 
-Output will look like this.
-
-```
-My name is John. I am 30 years old.
-(Yes I am old enough.)
-I have 3 kids. They are Daniel, Paul, Mark.
-THEY ARE DANIEL PAUL MARK 
-```
-
-So, basically, what **wash** does here is to render the input _source_ string with the provided _context_ variables.
+What **wash** does here is to render the input _source_ string with the provided _context_ variables.
 
 - `{{ name }}` prints out the value of `name` variable (_context.name_). It becomes `John` in this example.
 - `{{ age }}` does the same to `age` variable. But this time it's a number.
@@ -46,6 +37,15 @@ So, basically, what **wash** does here is to render the input _source_ string wi
 - `{{ join(kids, ", ") }}` joins the elements of `kids` using separator of `", "`. 
 - `{% for k in kids %} ... {% endfor %}` iterates `kids` collection. Inside this loop, you can access each element using `k` variable. So, `{{ k.value }}` evaluates to the value of the current element.
 - `{{ upper(k.value) }}` converts the value of `k` to uppercase characters.
+
+So, output will look like this.
+
+```
+My name is John. I am 30 years old.
+(Yes I am old enough.)
+I have 3 kids. They are Daniel, Paul, Mark.
+THEY ARE DANIEL PAUL MARK 
+```
 
 For more details on the template syntax, please see [Template Syntax](https://github.com/d5/wash/wiki/Template-Syntax) below.
 
