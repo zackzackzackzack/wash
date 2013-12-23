@@ -13,6 +13,12 @@ var ctx = {
             c: 'abc'
         }
     },
+    b: {
+        1: 'one',
+        2: 'two',
+        6: 'six',
+        7: 'seven'
+    },
     func1: function() { return 'FUNC1'; },
     func2: function(x) { return x; }
 };
