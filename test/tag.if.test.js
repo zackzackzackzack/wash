@@ -1,81 +1,69 @@
-var t = require('../lib/wash'),
-    expect = require('expect.js');
+require('./util');
 
-var ctx = {
-    foo: 10,
-    foo2: 20,
-    foo3: 30,
-    bar: 'Baar!',
-    fx1: function() { return 5; },
-    fx2: function(a) { return a * 2; },
-    comp: {
-        a: 123,
-        b: '456',
-        c: {
-            p1: 'test',
-            fx: function() { return 5; }
-        }
-    },
-    idx: [0, 1, 2, 3, 4],
-    arr: [9, 4, 3, 8, 5]
-};
+describe('if', function() {
+    beforeEach(function() {
+        reset();
+    });
 
-describe('tag', function() {
-    describe('if', function() {
-        it('if-endif', function() {
-            expect(t.render('{% if true %}TRUE{% endif %}', ctx)).to.equal('TRUE');
-            expect(t.render('{%if true%}TRUE{% endif %}', ctx)).to.equal('TRUE');
-            expect(t.render('{%if   true  %}TRUE{% endif %}', ctx)).to.equal('TRUE');
-            expect(t.render('{% if false %}TRUE{% endif %}', ctx)).to.equal('');
-            expect(t.render('{% if true %}foo{% endif %}', ctx)).to.equal('foo');
-            expect(t.render('{% if true %}{{ foo }}{% endif %}', ctx)).to.equal('10');
-            expect(t.render('{% if foo %}TRUE{% endif %}', ctx)).to.equal('TRUE');
-            expect(t.render('{% if notDefined %}TRUE{% endif %}', ctx)).to.equal('');
-            expect(t.render('{% if foo-foo %}TRUE{% endif %}', ctx)).to.equal('');
-            expect(t.render('{% if foo+foo %}TRUE{% endif %}', ctx)).to.equal('TRUE');
-            expect(t.render('{% if foo-foo+1 %}TRUE{% endif %}', ctx)).to.equal('TRUE');
-            expect(t.render('{% if len(bar) %}TRUE{% endif %}', ctx)).to.equal('TRUE');
-            expect(t.render('{% if len(bar)-len(bar) %}TRUE{% endif %}', ctx)).to.equal('');
-            expect(t.render('{% if len(bar)-(3) %}TRUE{% endif %}', ctx)).to.equal('TRUE');
-            expect(t.render('{% if (len(bar)-(3-0)) %}TRUE{% endif %}', ctx)).to.equal('TRUE');
-        });
+    describe('basic', function() {
+        expect('{% if true %}1{% endif %}', '1');
+        expect('{% if false %}1{% endif %}', '');
+        expect('{% if (true) %}1{% endif %}', '1');
+        expect('{% if (false) %}1{% endif %}', '');
+    });
 
-        it('if-else-endif', function() {
-            expect(t.render('{% if true %}TRUE{% else %}FALSE{% endif %}', ctx)).to.equal('TRUE');
-            expect(t.render('{% if false %}TRUE{% else %}FALSE{% endif %}', ctx)).to.equal('FALSE');
-            expect(t.render('{% if false %}{{ foo }}{% else %}{{ bar }}{% endif %}', ctx)).to.equal('Baar!');
-            expect(t.render('{% if foo %}TRUE{% else %}FALSE{% endif %}', ctx)).to.equal('TRUE');
-            expect(t.render('{% if notDefined %}TRUE{% else %}FALSE{% endif %}', ctx)).to.equal('FALSE');
-        });
+    describe('variable', function() {
+        expect('{% if foo %}1{% endif %}', '1');
+        expect('{% if notDefined %}1{% endif %}', '');
 
-        it('if-elif-else-endif', function() {
-            expect(t.render('{% if foo == 10 %}10{% elif foo == 20 %}20{% else %}?{% endif %}', ctx)).to.equal('10');
-            expect(t.render('{% if foo == 20 %}20{% elif foo == 10 %}10{% else %}?{% endif %}', ctx)).to.equal('10');
-            expect(t.render('{% if foo == 30 %}30{% elif foo == 20 %}20{% else %}?{% endif %}', ctx)).to.equal('?');
-        });            
+        expect('{% if a.b.c %}1{% endif %}', '1');
+        expect('{% if a.b.notDefined %}1{% endif %}', '');
+    });
 
-        it('if-if-endif-endif', function() {
-            expect(t.render('{% if true %}T1{% if true %}T2{% endif %}{% endif %}', ctx)).to.equal('T1T2');
-            expect(t.render('{% if true %}T1{% if false %}T2{% endif %}{% endif %}', ctx)).to.equal('T1');
-            expect(t.render('{% if false %}T1{% if true %}T2{% endif %}{% endif %}', ctx)).to.equal('');
-        });
+    describe('string', function() {
+        expect('{% if "foo" %}1{% endif %}', '1');
+        expect('{% if "" %}1{% endif %}', '');
+    });
 
-        it('if-if-endif-else-if-endif-endif', function() {
-            expect(t.render('{% if true %}T1{% if true %}T2{% endif %}{% else %}F1{% if true %}T2{% endif %}{% endif %}', ctx)).to.equal('T1T2');
-            expect(t.render('{% if true %}T1{% if false %}T2{% endif %}{% else %}F1{% if true %}T2{% endif %}{% endif %}', ctx)).to.equal('T1');
-            expect(t.render('{% if false %}T1{% if true %}T2{% endif %}{% else %}F1{% if true %}T2{% endif %}{% endif %}', ctx)).to.equal('F1T2');
-        });
+    describe('number', function() {
+        expect('{% if 100 %}1{% endif %}', '1');
+        expect('{% if 0 %}1{% endif %}', '');
+    });
 
-        it('syntax-errors', function() {
-/*
-            expect(function() { t.render('{% if() %}TRUE{% endif %}', ctx) }).to.throwError();
-            expect(function() { t.render('{% if %}TRUE{% endif %}', ctx) }).to.throwError();
-            expect(function() { t.render('{% if true %}TRUE{% endif anything %}', ctx) }).to.throwError();
-            expect(function() { t.render('{% if true %}TRUE{% else anything %}FALSE{% endif %}', ctx) }).to.throwError();
-            expect(function() { t.render('{% if true %}TRUE{% elif %}{% else %}FALSE{% endif %}', ctx) }).to.throwError();
-            expect(function() { t.render('{% if true %}TRUE{% elif foo) %}{% else %}double else{% else %}FALSE{% endif %}', ctx) }).to.throwError();
-            expect(function() { t.render('{% if true %}TRUE{% elif foo) %}{% else %}double endif{% endif %}{% endif %}', ctx) }).to.throwError();
-*/
-        });
+    describe('expression', function() {
+        expect('{% if len(foo) + len(foo) %}1{% endif %}', '1');
+        expect('{% if len(foo) - len(foo) %}1{% endif %}', '');
+        expect('{% if (len(foo) + len(foo)) %}1{% endif %}', '1');
+        expect('{% if (len(foo) - len(foo)) %}1{% endif %}', '');
+    });
+
+    describe('else', function() {
+        expect('{% if true %}1{% else %}0{% endif %}', '1');
+        expect('{% if false %}1{% else %}0{% endif %}', '0');
+    });
+
+    describe('elif', function() {
+        expect('{% if len("00") == 2 %}2{% elif len("00") == 1 %}1{% elif len("00") == 0 %}0{% else %}?{% endif %}', '2');
+        expect('{% if len("0") == 2 %}2{% elif len("0") == 1 %}1{% elif len("0") == 0 %}0{% else %}?{% endif %}', '1');
+        expect('{% if len("") == 2 %}2{% elif len("") == 1 %}1{% elif len("") == 0 %}0{% else %}?{% endif %}', '0');
+    });
+
+    describe('nested', function() {
+        expect('{% if true %}{% if true %}1{% endif %}{% endif %}', '1');
+        expect('{% if true %}{% if false %}1{% endif %}{% endif %}', '');
+        expect('{% if false %}{% if false %}1{% endif %}{% endif %}', '');
+        expect('{% if false %}{% if true %}1{% endif %}{% endif %}', '');
+    });
+
+    describe('errors', function() {
+        expect('{% if true %}{% if true %}1{% endif %}', '', function() { opt('throwsOnErrors', false); });
+        expectException('{% if true %}{% if true %}1{% endif %}', function() { opt('throwsOnErrors', true); });
+
+        expect('{% if %}1{% endif %}', '', function() { opt('throwsOnErrors', false); });
+        expectException('{% if %}1{% endif %}', function() { opt('throwsOnErrors', true); });
+
+        // current implementation just ignores an error in {% endif %}. so everything else just works.
+        expect('{% if true %}1{% endif what %}', '1', function() { opt('throwsOnErrors', false); });
+        expectException('{% if true %}1{% endif what %}', function() { opt('throwsOnErrors', true); });
     });
 });
