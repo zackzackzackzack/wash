@@ -36,6 +36,16 @@ describe('for', function() {
         expect('{% for i in range(3) %}{% for j in range(2) %}{% for k in range(1) %}{{ "" + i.value + j.value + k.value }}{% endfor %}{% endfor %}{% endfor %}', '000010100110200210');
     });
 
+    describe('max iterations', function () {
+        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', '0123456789', function() { opt('maximumIterations', -1); });
+        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', '0123456789', function() { opt('maximumIterations', 10); });
+        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', '01234', function() { opt('maximumIterations', 5); });
+        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', '01', function() { opt('maximumIterations', 2); });
+        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', '', function() { opt('maximumIterations', 0); });
+        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', '0123456789', function() { opt('maximumIterations', -1); });
+        expect('{% for i in "abcde" %}{{ i.value }}{% endfor %}', 'ab', function() { opt('maximumIterations', 2); });
+    });
+
     describe('errors', function() {
         expect('{% for i in %}{{ i.value }}{% endfor %}', '', function() { opt('throwsOnErrors', false); });
         expectException('{% for i in %}{{ i.value }}{% endfor %}', function() { opt('throwsOnErrors', true); });
