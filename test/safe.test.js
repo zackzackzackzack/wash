@@ -36,4 +36,8 @@ describe('safety', function() {
     describe('while', function() {
         expect('{{ while(true) {} }}', '');
     }); 
+
+    describe('arguments', function() {
+        expect('{{ arguements }}', '');
+    }); 
 });

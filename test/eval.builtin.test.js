@@ -110,5 +110,10 @@ describe('eval', function() {
         describe('more edge cases', function() {
             expect('{{ len((foo)) }}', '3');
         });
+
+        describe('not builtins', function() {
+            expect('{{ len2(foo) }}', '');
+            expectException('{{ len2(foo) }}', function() { opt('throwsOnErrors', true); });
+        });
     });
 });
