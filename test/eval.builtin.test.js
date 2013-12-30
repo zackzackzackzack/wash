@@ -107,6 +107,18 @@ describe('eval', function() {
             expect('{{ isObject(5) }}', 'false');
         });
 
+        describe('getAt', function() {
+            expect('{{ getAt(arr, 2) }}', '2');
+            expect('{{ getAt("abcde", 3) }}', 'd');
+            expect('{{ getAt(a.b.c, 1) }}', 'b');
+
+            expect('{{ getAt(arr, "2") }}', '', function() { opt('throwsOnErrors', false); });
+            expectException('{{ getAt(arr, "2") }}', function() { opt('throwsOnErrors', true); });
+
+            expect('{{ getAt(a, 0) }}', '', function() { opt('throwsOnErrors', false); });
+            expectException('{{ getAt(a, 0) }}', function() { opt('throwsOnErrors', true); });
+        });
+
         describe('more edge cases', function() {
             expect('{{ len((foo)) }}', '3');
         });
