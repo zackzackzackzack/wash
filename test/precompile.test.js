@@ -2,6 +2,10 @@ var t = require('../lib/wash'),
     expect = require('expect.js');
 
 describe('precompile', function() {
+    beforeEach(function() {
+        reset();
+    });
+
     it('simplest', function() { 
         var source = '{{ foo }}';        
         var ctx = { foo: 'bar' };

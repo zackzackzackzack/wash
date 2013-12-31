@@ -6,11 +6,11 @@ describe('safety', function() {
     });
 
     describe('call', function() {
-        expect('{{ arr.join.call(arr, ",") }}', '');
+        expectException('{{ arr.join.call(arr, ",") }}');
     });
 
     describe('apply', function() {
-        expect('{{ arr.concat.apply(arr, rarr) }}', '');
+        expectException('{{ arr.concat.apply(arr, rarr) }}');
     });
 
     describe('String', function() {
@@ -18,23 +18,27 @@ describe('safety', function() {
     });
 
     describe('Array', function() {
+        // arr.prototype ==> ""
         expect('{{ arr.prototype }}', '');
-        expect('{{ arr.prototype.join(",") }}', '');
+        expectException('{{ arr.prototype.join(",") }}');
         expect('{% for i in arr.prototype %}{{ i.value }}{% endfor %}', '');
     });
 
     describe('__builtin', function() {
+        // __builtin ==> ""
         expect('{{ __builtin }}', '');
-        expect('{{ __builtin.len("123") }}', '');
+        expectException('{{ __builtin.len("123") }}');
     });
 
     describe('__ctx', function() {
+        // __ctx ==> ""
         expect('{{ __ctx }}', '');
         expect('{{ __ctx.foo }}', '');
+        expectException('{{ __ctx.func1() }}');
     });
 
     describe('while', function() {
-        expect('{{ while(true) {} }}', '');
+        expectException('{{ while(true) {} }}');
     }); 
 
     describe('arguments', function() {

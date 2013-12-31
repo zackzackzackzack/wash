@@ -47,6 +47,7 @@ function opt(name, value) {
 
 function reset() {
     wash.resetOptions();
+    wash.setOption('throwsOnErrors', true);
 }
 
 global.esc = esc;

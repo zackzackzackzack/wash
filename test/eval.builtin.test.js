@@ -124,7 +124,7 @@ describe('eval', function() {
         });
 
         describe('not builtins', function() {
-            expect('{{ len2(foo) }}', '');
+            expect('{{ len2(foo) }}', '', function() { opt('throwsOnErrors', false); });
             expectException('{{ len2(foo) }}', function() { opt('throwsOnErrors', true); });
         });
     });

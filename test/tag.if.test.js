@@ -62,8 +62,7 @@ describe('if', function() {
         expect('{% if %}1{% endif %}', '', function() { opt('throwsOnErrors', false); });
         expectException('{% if %}1{% endif %}', function() { opt('throwsOnErrors', true); });
 
-        // current implementation just ignores an error in {% endif %}. so everything else just works.
-        expect('{% if true %}1{% endif what %}', '1', function() { opt('throwsOnErrors', false); });
+        expect('{% if true %}1{% endif what %}', '', function() { opt('throwsOnErrors', false); });
         expectException('{% if true %}1{% endif what %}', function() { opt('throwsOnErrors', true); });
     });
 });
