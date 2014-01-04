@@ -119,6 +119,57 @@ describe('eval', function() {
             expectException('{{ getAt(a, 0) }}', function() { opt('throwsOnErrors', true); });
         });
 
+        describe('split', function() {
+            expect('{{ split("1", "") }}', '1');
+            expect('{{ split("1", ",") }}', '1');
+            // empty delim -> split all characters
+            expect('{{ split("1,2,3", "") }}', '1,,,2,,,3');
+            expect('{{ split("1,2,3", ",") }}', '1,2,3');
+
+            expect('{{ split("1,2,3", 1) }}', '', function() { opt('throwsOnErrors', false); });
+            expectException('{{ split("1,2,3", 1) }}', function() { opt('throwsOnErrors', true); });
+
+            expect('{{ split(arr, ",") }}', '', function() { opt('throwsOnErrors', false); });
+            expectException('{{ split(arr, ",") }}', function() { opt('throwsOnErrors', true); });
+
+            expect('{{ split(func1, ",") }}', '', function() { opt('throwsOnErrors', false); });
+            expectException('{{ split(func1, ",") }}', function() { opt('throwsOnErrors', true); });
+        });
+
+        describe('int', function() {
+            expect('{{ int("5") }}', '5');
+            expect('{{ int("1234") }}', '1234');
+            expect('{{ int("12.34") }}', '12');
+            expect('{{ int("0.34") }}', '0');
+
+            expect('{{ int(arr) }}', '', function() { opt('throwsOnErrors', false); });
+            expectException('{{ int(arr) }}', function() { opt('throwsOnErrors', true); });
+        });
+
+        describe('float', function() {
+            expect('{{ float("5") }}', '5');
+            expect('{{ float("1234") }}', '1234');
+            expect('{{ float("12.34") }}', '12.34');
+            expect('{{ float("0.34") }}', '0.34');
+
+            expect('{{ float(arr) }}', '', function() { opt('throwsOnErrors', false); });
+            expectException('{{ float(arr) }}', function() { opt('throwsOnErrors', true); });
+        });
+
+        describe('str', function() {
+            expect('{{ str("foo") }}', 'foo');
+            expect('{{ str(1234) }}', '1234');
+            expect('{{ str(ten) }}', '10');
+            expect('{{ str(arr) }}', '0,1,2,3,4');
+
+            expect('{{ str(func1) }}', '', function() { opt('throwsOnErrors', false); });
+            expectException('{{ str(func1)) }}', function() { opt('throwsOnErrors', true); });
+
+            expect('{{ str(a) }}', '', function() { opt('throwsOnErrors', false); });
+            expectException('{{ str(a)) }}', function() { opt('throwsOnErrors', true); });
+        });
+
+
         describe('more edge cases', function() {
             expect('{{ len((foo)) }}', '3');
         });
