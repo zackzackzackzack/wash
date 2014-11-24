@@ -54,12 +54,12 @@ function expectError(source, opts, expected) {
         opts = opts || {};
 
         assert.throws(function() {
-            opts.throwsOnErrors = true;
+            opts.throwOnError = true;
             var wash = new Wash(source, opts);
             wash.render(ctx);
         });
 
-        opts.throwsOnErrors = false;
+        opts.throwOnError = false;
         var wash = new Wash(source, opts);
         var actual = wash.render(ctx);
         assert.strictEqual(actual, expected);
