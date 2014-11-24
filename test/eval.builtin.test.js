@@ -1,10 +1,6 @@
-require('./util');
+'use strict';
 
 describe('eval', function() {
-    beforeEach(function() {
-        reset();
-    });
-
     describe('built-ins', function() {
         describe('len', function() {
             expect('{{ len(foo) }}', '3');
@@ -34,8 +30,7 @@ describe('eval', function() {
             expect('{{ join(range(3), ", ") }}', '0, 1, 2');
             expect('{{ join(range(3), "") }}', '012');
 
-            expect('{{ join(range(3)) }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ join(range(3)) }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ join(range(3)) }}', '');
         });
 
         describe('reverse', function() {
@@ -43,11 +38,8 @@ describe('eval', function() {
             expect('{{ reverse("foo") }}', 'oof');
             expect('{{ reverse(foo) }}', 'oof');
 
-            expect('{{ reverse() }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ reverse() }}', function() { opt('throwsOnErrors', true) });
-
-            expect('{{ reverse(ten) }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ reverse(ten) }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ reverse() }}', '');
+            expectError('{{ reverse(ten) }}', '');
 
             expect('{{ reverse(foo) + foo }}', 'ooffoo');
         });
@@ -58,19 +50,10 @@ describe('eval', function() {
             expect('{{ sort(rarr) }}', '2,3,4,8,9');
             expect('{{ sort(hello) }}', ' ,HWdellloor');
 
-            expect('{{ sort(range(3), true) }}', '2,1,0');
-            expect('{{ sort(arr, true) }}', '4,3,2,1,0');
-            expect('{{ sort(rarr, true) }}', '9,8,4,3,2');
-            expect('{{ sort(hello, true) }}', 'roollledWH, ');
-
-            expect('{{ sort() }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ sort() }}', function() { opt('throwsOnErrors', true) });
-
-            expect('{{ sort(ten) }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ sort(ten) }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ sort() }}', '');
+            expectError('{{ sort(ten) }}', '');
 
             expect('{{ sort(hello) + hello }}', ' ,HWdellloorHello, World');
-            expect('{{ sort(hello,true) + hello }}', 'roollledWH, Hello, World');
         });
 
         describe('slice', function() {
@@ -84,11 +67,8 @@ describe('eval', function() {
             expect('{{ slice("01234",1) }}', '1234');
             expect('{{ slice("01234") }}', '01234');
 
-            expect('{{ slice(5) }}', '', function() { opt('throwsOnErrors', false); });
-            expectException('{{ slice(5) }}', function() { opt('throwsOnErrors', true); });
-
-            expect('{{ slice() }}', '', function() { opt('throwsOnErrors', false); });
-            expectException('{{ slice() }}', function() { opt('throwsOnErrors', true); });
+            expectError('{{ slice(5) }}', '');
+            expectError('{{ slice() }}', '');
         });
 
         describe('isArray', function() {
@@ -100,7 +80,7 @@ describe('eval', function() {
         });
 
         describe('isObject', function() {
-            expect('{{ isObject(arr) }}', 'true');
+            expect('{{ isObject(arr) }}', 'false');
             expect('{{ isObject(foo) }}', 'false');
             expect('{{ isObject(a) }}', 'true');
             expect('{{ isObject("foo") }}', 'false');
@@ -112,11 +92,8 @@ describe('eval', function() {
             expect('{{ getAt("abcde", 3) }}', 'd');
             expect('{{ getAt(a.b.c, 1) }}', 'b');
 
-            expect('{{ getAt(arr, "2") }}', '', function() { opt('throwsOnErrors', false); });
-            expectException('{{ getAt(arr, "2") }}', function() { opt('throwsOnErrors', true); });
-
-            expect('{{ getAt(a, 0) }}', '', function() { opt('throwsOnErrors', false); });
-            expectException('{{ getAt(a, 0) }}', function() { opt('throwsOnErrors', true); });
+            expectError('{{ getAt(arr, "2") }}', '');
+            expectError('{{ getAt(a, 0) }}', '');
         });
 
         describe('split', function() {
@@ -126,14 +103,9 @@ describe('eval', function() {
             expect('{{ split("1,2,3", "") }}', '1,,,2,,,3');
             expect('{{ split("1,2,3", ",") }}', '1,2,3');
 
-            expect('{{ split("1,2,3", 1) }}', '', function() { opt('throwsOnErrors', false); });
-            expectException('{{ split("1,2,3", 1) }}', function() { opt('throwsOnErrors', true); });
-
-            expect('{{ split(arr, ",") }}', '', function() { opt('throwsOnErrors', false); });
-            expectException('{{ split(arr, ",") }}', function() { opt('throwsOnErrors', true); });
-
-            expect('{{ split(func1, ",") }}', '', function() { opt('throwsOnErrors', false); });
-            expectException('{{ split(func1, ",") }}', function() { opt('throwsOnErrors', true); });
+            expectError('{{ split("1,2,3", 1) }}', '');
+            expectError('{{ split(arr, ",") }}', '');
+            expectError('{{ split(func1, ",") }}', '');
         });
 
         describe('int', function() {
@@ -141,9 +113,6 @@ describe('eval', function() {
             expect('{{ int("1234") }}', '1234');
             expect('{{ int("12.34") }}', '12');
             expect('{{ int("0.34") }}', '0');
-
-            expect('{{ int(arr) }}', '', function() { opt('throwsOnErrors', false); });
-            expectException('{{ int(arr) }}', function() { opt('throwsOnErrors', true); });
         });
 
         describe('float', function() {
@@ -151,22 +120,17 @@ describe('eval', function() {
             expect('{{ float("1234") }}', '1234');
             expect('{{ float("12.34") }}', '12.34');
             expect('{{ float("0.34") }}', '0.34');
-
-            expect('{{ float(arr) }}', '', function() { opt('throwsOnErrors', false); });
-            expectException('{{ float(arr) }}', function() { opt('throwsOnErrors', true); });
         });
 
         describe('str', function() {
             expect('{{ str("foo") }}', 'foo');
             expect('{{ str(1234) }}', '1234');
             expect('{{ str(ten) }}', '10');
-            expect('{{ str(arr) }}', '0,1,2,3,4');
+            expect('{{ str(arr) }}', '[0,1,2,3,4]');
 
-            expect('{{ str(func1) }}', '', function() { opt('throwsOnErrors', false); });
-            expectException('{{ str(func1)) }}', function() { opt('throwsOnErrors', true); });
+            expect('{{ str(func1) }}', 'undefined');
 
-            expect('{{ str(a) }}', '', function() { opt('throwsOnErrors', false); });
-            expectException('{{ str(a)) }}', function() { opt('throwsOnErrors', true); });
+            expect('{{ str(a) }}', '{\"b\":{\"c\":\"abc\"}}');
         });
 
 
@@ -175,8 +139,7 @@ describe('eval', function() {
         });
 
         describe('not builtins', function() {
-            expect('{{ len2(foo) }}', '', function() { opt('throwsOnErrors', false); });
-            expectException('{{ len2(foo) }}', function() { opt('throwsOnErrors', true); });
+            expectError('{{ len2(foo) }}', '');
         });
     });
 });

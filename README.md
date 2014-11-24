@@ -61,10 +61,6 @@ Wash is safe. You can run untrusted template codes in Wash.
 - [Template Syntax](https://github.com/d5/wash/wiki/Template-Syntax)
 - [Using Wash](https://github.com/d5/wash/wiki/Using-Wash)
 
-## Wash in Production
-
-- [gist.sh](http://gist.sh): _(currently in beta phase)_ 
-
 ## License
 
 [MIT license](https://raw.github.com/d5/wash/master/LICENSE)

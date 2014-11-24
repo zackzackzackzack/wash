@@ -1,10 +1,6 @@
-require('./util');
+'use strict';
 
 describe('for', function() {
-    beforeEach(function() {
-        reset();
-    });
-
     describe('array', function() {
         expect('{% for i in arr %}{{ i.value }}{% endfor %}', '01234');
         expect('{% for i in arr %}{{ i.key }}{% endfor %}', '01234');
@@ -37,38 +33,30 @@ describe('for', function() {
     });
 
     describe('max iterations', function () {
-        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', '0123456789', function() { opt('maximumIterations', -1); });
-        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', '0123456789', function() { opt('maximumIterations', 10); });
-        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', '01234', function() { opt('maximumIterations', 5); });
-        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', '01', function() { opt('maximumIterations', 2); });
-        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', '', function() { opt('maximumIterations', 0); });
-        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', '0123456789', function() { opt('maximumIterations', -1); });
-        expect('{% for i in "abcde" %}{{ i.value }}{% endfor %}', 'ab', function() { opt('maximumIterations', 2); });
+        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', { maximumIterations: -1 }, '0123456789');
+        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', { maximumIterations: 10 }, '0123456789');
+        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', { maximumIterations: 5 }, '01234');
+        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', { maximumIterations: 2 }, '01');
+        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', { maximumIterations: 0 }, '');
+        expect('{% for i in range(10) %}{{ i.value }}{% endfor %}', { maximumIterations: -1 }, '0123456789');
+        expect('{% for i in "abcde" %}{{ i.value }}{% endfor %}', { maximumIterations: 2 }, 'ab');
     });
 
     describe('errors', function() {
-        expect('{% for i in %}{{ i.value }}{% endfor %}', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% for i in %}{{ i.value }}{% endfor %}', function() { opt('throwsOnErrors', true); });
+        expectError('{% for i in %}{{ i.value }}{% endfor %}', '');
 
-        expect('{% for in range(4) %}{{ i.value }}{% endfor %}', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% for in range(4) %}{{ i.value }}{% endfor %}', function() { opt('throwsOnErrors', true); });
+        expectError('{% for in range(4) %}{{ i.value }}{% endfor %}', '');
 
-        expect('{% for in %}{{ i.value }}{% endfor %}', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% for in %}{{ i.value }}{% endfor %}', function() { opt('throwsOnErrors', true); });
+        expectError('{% for in %}{{ i.value }}{% endfor %}', '');
 
-        expect('{% for i range(4) %}{{ i.value }}{% endfor %}', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% for i range(4) %}{{ i.value }}{% endfor %}', function() { opt('throwsOnErrors', true); });
+        expectError('{% for i range(4) %}{{ i.value }}{% endfor %}', '');
 
-        expect('{% for(i in range(4)) %}{{ i.value }}{% endfor %}', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% for(i in range(4)) %}{{ i.value }}{% endfor %}', function() { opt('throwsOnErrors', true); });
+        expectError('{% for(i in range(4)) %}{{ i.value }}{% endfor %}', '');
 
-        expect('{% for (i) in range(4) %}{{ i.value }}{% endfor %}', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% for (i) in range(4) %}{{ i.value }}{% endfor %}', function() { opt('throwsOnErrors', true); });
+        expectError('{% for (i) in range(4) %}{{ i.value }}{% endfor %}', '');
 
-        expect('{% for range(3) in range(4) %}{{ i.value }}{% endfor %}', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% for range(3) in range(4) %}{{ i.value }}{% endfor %}', function() { opt('throwsOnErrors', true); });
+        expectError('{% for range(3) in range(4) %}{{ i.value }}{% endfor %}', '');
 
-        expect('{% for i in range(4) %}{% for j in range(3) %}{{ "" + i.value + j.value }}{% endfor %}', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% for i in range(4) %}{% for j in range(3) %}{{ "" + i.value + j.value }}{% endfor %}', function() { opt('throwsOnErrors', true); });
+        expectError('{% for i in range(4) %}{% for j in range(3) %}{{ "" + i.value + j.value }}{% endfor %}', '');
     });
 });

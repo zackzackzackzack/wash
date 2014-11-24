@@ -1,10 +1,6 @@
-require('./util');
+'use strict';
 
 describe('eval', function() {
-    beforeEach(function() {
-        reset();
-    });
-
     describe('empty', function() {
         expect('{{}}', '');
         expect('{{    }}', '');
@@ -48,17 +44,13 @@ describe('eval', function() {
             expect('{{ ("foo (bar)") }}', 'foo (bar)');
             expect('{{ ("foo bar)") }}', 'foo bar)');
 
-            expect('{{ \'foo\' }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ \'foo\' }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ \'foo\' }}', '');
         });
 
         describe('syntax error', function() {
-            expect('{{ () }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ () }}', function() { opt('throwsOnErrors', true) });
-            expect('{{ true false }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ true false }}', function() { opt('throwsOnErrors', true) });
-            expect('{{ "foo" "bar" }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ "foo" "bar" }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ () }}', '');
+            expectError('{{ true false }}', '');
+            expectError('{{ "foo" "bar" }}', '');
         });
     });
     
@@ -104,8 +96,7 @@ describe('eval', function() {
             expect('{{ true == true }}', 'true');
             expect('{{ "foo" == "foo" }}', 'true');
             expect('{{ "foo" == "bar" }}', 'false');
-            expect('{{ 1 === 2 }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ 1 === 2 }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ 1 === 2 }}', '');
         });
 
         describe('==', function() {
@@ -114,73 +105,62 @@ describe('eval', function() {
             expect('{{ true != true }}', 'false');
             expect('{{ "foo" != "foo" }}', 'false');
             expect('{{ "foo" != "bar" }}', 'true');
-            expect('{{ 1 !== 2 }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ 1 !== 2 }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ 1 !== 2 }}', '');
         });
 
         describe('>', function() {
             expect('{{ 1 > 2 }}', 'false');
             expect('{{ 2 > 2 }}', 'false');
             expect('{{ 3 > 2 }}', 'true');
-            expect('{{ 1 >> 2 }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ 1 >> 2 }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ 1 >> 2 }}', '');
         });
 
         describe('>=', function() {
             expect('{{ 1 >= 2 }}', 'false');
             expect('{{ 2 >= 2 }}', 'true');
             expect('{{ 3 >= 2 }}', 'true');
-            expect('{{ 1 >>= 2 }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ 1 >>= 2 }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ 1 >>= 2 }}', '');
         });
 
         describe('<', function() {
             expect('{{ 1 < 2 }}', 'true');
             expect('{{ 2 < 2 }}', 'false');
             expect('{{ 3 < 2 }}', 'false');
-            expect('{{ 1 << 2 }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ 1 << 2 }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ 1 << 2 }}', '');
         });
 
         describe('<=', function() {
             expect('{{ 1 <= 2 }}', 'true');
             expect('{{ 2 <= 2 }}', 'true');
             expect('{{ 3 <= 2 }}', 'false');
-            expect('{{ 1 <== 2 }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ 1 <== 2 }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ 1 <== 2 }}', '');
         });
 
         describe('&&', function() {
             expect('{{ true && true }}', 'true');
             expect('{{ true && false }}', 'false');
             expect('{{ false && false }}', 'false');
-            expect('{{ true &&& true }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ true &&& true }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ true &&& true }}', '');
         });
 
         describe('||', function() {
             expect('{{ true || true }}', 'true');
             expect('{{ true || false }}', 'true');
             expect('{{ false || false }}', 'false');
-            expect('{{ true ||| true }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ true ||| true }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ true ||| true }}', '');
         });
 
         describe('!', function() {
             expect('{{ !true }}', 'false');
             expect('{{ !false }}', 'true');
             expect('{{ !!true }}', 'true');
-            expect('{{ true ! true }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ true ! true }}', function() { opt('throwsOnErrors', true) });
-            expect('{{ true !! true }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ true !! true }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ true ! true }}', '');
+            expectError('{{ true !! true }}', '');
         });
 
         describe('other no-supports', function() {
-            expect('{{ 1 <> 2 }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ 1 <> 2 }}', function() { opt('throwsOnErrors', true) }); 
-            expect('{{ 1 !! 2 }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ 1 !! 2 }}', function() { opt('throwsOnErrors', true) }); 
+            expectError('{{ 1 <> 2 }}', '');
+            expectError('{{ 1 !! 2 }}', '');
         });
     });
 });

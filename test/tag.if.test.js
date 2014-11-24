@@ -1,10 +1,6 @@
-require('./util');
+'use strict';
 
 describe('if', function() {
-    beforeEach(function() {
-        reset();
-    });
-
     describe('basic', function() {
         expect('{% if true %}1{% endif %}', '1');
         expect('{% if false %}1{% endif %}', '');
@@ -56,13 +52,10 @@ describe('if', function() {
     });
 
     describe('errors', function() {
-        expect('{% if true %}{% if true %}1{% endif %}', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% if true %}{% if true %}1{% endif %}', function() { opt('throwsOnErrors', true); });
+        expectError('{% if true %}{% if true %}1{% endif %}', '');
 
-        expect('{% if %}1{% endif %}', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% if %}1{% endif %}', function() { opt('throwsOnErrors', true); });
+        expectError('{% if %}1{% endif %}', '');
 
-        expect('{% if true %}1{% endif what %}', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% if true %}1{% endif what %}', function() { opt('throwsOnErrors', true); });
+        expectError('{% if true %}1{% endif what %}', '');
     });
 });

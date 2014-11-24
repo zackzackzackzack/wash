@@ -1,10 +1,6 @@
-require('./util');
+'use strict';
 
 describe('eval', function() {
-    beforeEach(function() {
-        reset();
-    });
-
     describe('function', function() {
         describe('call', function() {
             expect('{{ func1() }}', 'FUNC1');
@@ -15,14 +11,10 @@ describe('eval', function() {
         });
 
         describe('global functions', function() {
-            expect('{{ Math.abs(-123) }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ Math.abs(-123) }}', function() { opt('throwsOnErrors', true) });
-            expect('{{ process.memoryUsage() }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ process.memoryUsage() }}', function() { opt('throwsOnErrors', true) });
-            expect('{{ JSON.parse("{}") }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ JSON.parse("{}") }}', function() { opt('throwsOnErrors', true) });
-            expect('{{ parseInt("123") }}', '', function() { opt('throwsOnErrors', false) });
-            expectException('{{ parseInt("123") }}', function() { opt('throwsOnErrors', true) });
+            expectError('{{ Math.abs(-123) }}', '');
+            expectError('{{ process.memoryUsage() }}', '');
+            expectError('{{ JSON.parse("{}") }}', '');
+            expectError('{{ parseInt("123") }}', '');
         });
     });
 });

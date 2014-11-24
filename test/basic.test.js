@@ -1,10 +1,6 @@
-require('./util');
+'use strict';
 
 describe('eval', function() {
-    beforeEach(function() {
-        reset();
-    });
-
     describe('empty', function() {
         expect('', '');
         expect('     ', '     ');

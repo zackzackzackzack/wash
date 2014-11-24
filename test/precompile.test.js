@@ -1,31 +1,19 @@
-var t = require('../lib/wash'),
-    expect = require('expect.js');
+'use strict';
+
+var wash = require('../lib/wash');
 
 describe('precompile', function() {
-    beforeEach(function() {
-        reset();
-    });
-
-    it('simplest', function() { 
+    it('simplest', function() {
         var source = '{{ foo }}';        
         var ctx = { foo: 'bar' };
-        var precompiled = t.precompile(source);
-        expect(t.render(source, ctx)).to.equal(t.render(precompiled, ctx));
+        var precompiled = wash.precompile(source);
+        assert.strictEqual(wash.render(source, ctx), wash.render(precompiled, ctx));
     });
 
     it('a bit more', function() { 
         var source = '{% for i in range(foo) %}{{ i }}{% endfor %}';        
         var ctx = { foo: 5 };
-        var precompiled = t.precompile(source);
-        expect(t.render(source, ctx)).to.equal(t.render(precompiled, ctx));
-    });
-
-    it('save and load', function() {
-        var source = '{% for i in range(foo) %}{{ i }}{% endfor %}';        
-        var ctx = { foo: 5 };
-        var precompiled = t.precompile(source);
-        var saved = t.save(precompiled);
-        var loaded = t.load(saved);
-        expect(t.render(precompiled, ctx)).to.equal(t.render(loaded, ctx));
+        var precompiled = wash.precompile(source);
+        assert.strictEqual(wash.render(source, ctx), wash.render(precompiled, ctx));
     });
 });

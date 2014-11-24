@@ -1,10 +1,6 @@
-require('./util');
+'use strict';
 
 describe('raw', function() {
-    beforeEach(function() {
-        reset();
-    });
-
     describe('basic', function() {
         expect('{% raw %}foo{% endraw %}', 'foo');
         expect('{% raw %}{{ foo }}{% endraw %}', '{{ foo }}');
@@ -23,10 +19,8 @@ describe('raw', function() {
     });
 
     describe('errors', function() {
-        expect('{% raw %}foo', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% raw %}foo', function() { opt('throwsOnErrors', true); });
+        expectError('{% raw %}foo', '');
 
-        expect('{% raw %}{% raw %}foo{% endraw %}', '', function() { opt('throwsOnErrors', false); });
-        expectException('{% raw %}{% raw %}foo{% endraw %}', function() { opt('throwsOnErrors', true); });
-    })
+        expectError('{% raw %}{% raw %}foo{% endraw %}', '');
+    });
 });
