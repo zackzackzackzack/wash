@@ -34,4 +34,8 @@ describe('eval', function() {
         expect('{{ NaN }}', '');
         expect('{{ undefined }}', '');
     });
+
+    describe('partial error', function() {
+        expectError('{{ notDefined }} still {{ foo }}', ' still foo');
+    });
 });

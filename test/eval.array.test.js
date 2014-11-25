@@ -7,29 +7,18 @@ describe('eval', function() {
         expectError('{{ arr[0]] }}', '');
         expectError('{{ arr[[0] }}', '');
 
-        expect('{{ arr[0] }}', '0');
-        expect('{{ arr[ 0 ] }}', '0');
-        expect('{{ arr[ 0] }}', '0');
-        expect('{{ arr[0 ] }}', '0');
-
-        expect('{{ arr[1] }}', '1');
-        expect('{{ arr[2] }}', '2');
-        expect('{{ arr[3] }}', '3');
-        expect('{{ arr[4] }}', '4');
-        expect('{{ rarr[0] }}', '9');
-        expect('{{ rarr[1] }}', '4');
-        expect('{{ rarr[2] }}', '3');
-        expect('{{ rarr[3] }}', '2');
-        expect('{{ rarr[4] }}', '8');
+        expectError('{{ arr[0] }}', '');
+        expectError('{{ rarr[4] }}', '');
     });
 
     describe('mixed', function() {
-        expect('{{ arr[two] }}', '2');
-        expect('{{ arr[math.min(1, 2)] }}', '1');
-        expect('{{ arr[arr[3]] }}', '3');
-        expect('{{ rarr[arr[arr[arr[1]]]] }}', '4');
-        expect('{{ rarr[arr[3]] }}', '2');
-        expect('{{ arr[4 - 2] }}', '2');
-        expect('{{ arr[1 * 2] }}', '2');
+        expectError('{{ arr[two] }}', '');
+        expectError('{{ arr[math.min(1, 2)] }}', '');
+        expectError('{{ arr[arr[3]] }}', '');
+        expectError('{{ rarr[arr[arr[arr[1]]]] }}', '');
+        expectError('{{ rarr[arr[3]] }}', '');
+        expectError('{{ arr[4 - 2] }}', '');
+        expectError('{{ arr[1 * 2] }}', '');
+        expectError('{{ harr[0].foo }}', '');
     });
 });

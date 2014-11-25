@@ -25,7 +25,15 @@ var ctx = {
         7: 'seven'
     },
     func1: function() { return 'FUNC1'; },
-    func2: function(x) { return x; }
+    func2: function(x) { return x; },
+    harr: [
+        {
+            foo: 'bar'
+        },
+        {
+            foo2: 'bar2'
+        }
+    ]
 };
 
 function esc(str) {

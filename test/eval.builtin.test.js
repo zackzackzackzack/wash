@@ -87,13 +87,17 @@ describe('eval', function() {
             expect('{{ isObject(5) }}', 'false');
         });
 
-        describe('getAt', function() {
-            expect('{{ getAt(arr, 2) }}', '2');
-            expect('{{ getAt("abcde", 3) }}', 'd');
-            expect('{{ getAt(a.b.c, 1) }}', 'b');
+        describe('get', function() {
+            expect('{{ get(arr, 2) }}', '2');
+            expect('{{ get("abcde", 3) }}', 'd');
+            expect('{{ get(a.b.c, 1) }}', 'b');
 
-            expectError('{{ getAt(arr, "2") }}', '');
-            expectError('{{ getAt(a, 0) }}', '');
+            expectError('{{ get(arr, "2") }}', '');
+            expectError('{{ get(a, 0) }}', '');
+
+            expect('{{ get(a, ".b.c") }}', 'abc');
+            expect('{{ get(a.b, ".c") }}', 'abc');
+            expect('{{ get(a.b.c, 1) }}', 'b');
         });
 
         describe('split', function() {
