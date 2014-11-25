@@ -141,5 +141,10 @@ describe('eval', function() {
         describe('not builtins', function() {
             expectError('{{ len2(foo) }}', '');
         });
+
+        describe('some math functions', function() {
+            expect('{{ math.min(4, 5) }}', '4');
+            expect('{{ math.max(4, 5) }}', '5');
+        });
     });
 });

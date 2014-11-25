@@ -34,8 +34,12 @@ function esc(str) {
 function expect(source, opts, expected) {
     if(arguments.length === 2) {
         expected = opts;
-        opts = null;
+        opts = {};
     }
+
+    opts = opts || {};
+    opts.outputPrecompiledSourceToConsole = false;
+    opts.outputErrorToConsole = true;
 
     it('Wash.render("' + esc(source) + '") => "' + esc(expected) + '"', function() {
         var wash = new Wash(source, opts);
