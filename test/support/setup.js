@@ -10,6 +10,7 @@ var ctx = {
     bar: 'Bar',
     hello: 'Hello, World',
     ten: 10,
+    two: 2,
     arr: [0,1,2,3,4],
     rarr: [9,4,3,2,8],
     a: {
