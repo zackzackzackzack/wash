@@ -29,7 +29,7 @@ function expectError(source, customBuiltins, context, expected) {
         });
 
         opts.throwOnError = false;
-        var wash = new Wash(source, opts), customBuiltins;
+        var wash = new Wash(source, opts, customBuiltins);
         var actual = wash.render(context);
         assert.strictEqual(actual, expected);
     });

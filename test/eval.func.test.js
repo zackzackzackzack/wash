@@ -8,6 +8,8 @@ describe('eval', function() {
             expect('{{ func2() }}', 'undefined');
             expect('{{ func2(foo + bar) }}', 'fooBar');
             expect('{{ func2(a.b.c) }}', 'abc');
+
+            expect('{{ reverse("123" + foo) }}', 'oof321');
         });
 
         describe('global functions', function() {
