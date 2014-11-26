@@ -1,0 +1,32 @@
+{
+    "evalOpen": "{{",
+    "evalBodyRe": "[^]*?",
+    "evalClose": "}}",
+
+    "actionOpen": "{%",
+    "actionBodyRe": "[^]*?",
+    "actionBodyCaptureRe": "\\s*(\\w+)?([^]*)?",
+    "actionClose": "%}",
+
+    "operators": [
+        { "code": "+", "matchRe": "\\+(?!=)" },
+        { "code": "-", "matchRe": "\\-(?!=)" },
+        { "code": "*", "matchRe": "\\*(?!=)" },
+        { "code": "/", "matchRe": "\\/(?!=)" },
+        { "code": "==", "matchRe": "==(?!=)" },
+        { "code": "!=", "matchRe": "!=(?!=)" },
+        { "code": ">=", "matchRe": ">=(?!=)" },
+        { "code": "<=", "matchRe": "<=(?!=)" },
+        { "code": ">", "matchRe": ">(?!=|>|<)" },
+        { "code": "<", "matchRe": "<(?!=|<|>)" },
+        { "code": "||", "matchRe": "\\|\\|" },
+        { "code": "&&", "matchRe": "&&" },
+        { "code": "!", "matchRe": "!(?!=)" }
+    ],
+
+    "stringLiteralRe": "\".+?\"",
+
+    "additionalTokenSplitters": [ "\\(", "\\)", "\\[", "]", "," ],
+
+    "literalsRe": [ "\".*\"", "true", "false", "-?\\d*\\.?\\d+", "," ]
+}

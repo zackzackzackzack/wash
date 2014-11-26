@@ -1,0 +1,57 @@
+{
+    "for": {
+        "openTag": "for",
+        "level": 1,
+        "requireParams": true
+    },
+    "in": {
+        "openTag": "for",
+        "level": 0,
+        "requireParams": false
+    },
+    "endfor": {
+        "openTag":  "for",
+        "level": -1,
+        "requireParams": false
+    },
+    "if": {
+        "openTag":  "if",
+        "level": 1,
+        "requireParams": true
+    },
+    "elif": {
+        "openTag": "if",
+        "level": 0,
+        "requireParams": true
+    },
+    "else": {
+        "openTag": "if",
+        "level": 0,
+        "requireParams": false
+    },
+    "endif": {
+        "openTag": "if",
+        "level": -1,
+        "requireParams": false
+    },
+    "raw": {
+        "openTag": "raw",
+        "level": 1,
+        "requireParams": false
+    },
+    "endraw": {
+        "openTag": "raw",
+        "level": -1,
+        "requireParams": false
+    },
+    "nospace": {
+        "openTag": "nospace",
+        "level": 1,
+        "requireParams": false
+    },
+    "endnospace": {
+        "openTag": "nospace",
+        "level": -1,
+        "requireParams": false
+    }
+}
