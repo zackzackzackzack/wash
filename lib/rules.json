@@ -24,9 +24,7 @@
         { "code": "!", "matchRe": "!(?!=)" }
     ],
 
-    "stringLiteralRe": "\".+?\"",
-
-    "additionalTokenSplitters": [ "\\(", "\\)", "\\[", "]", "," ],
+    "additionalTokenSplitters": [ "\".+?\"", "\\(", "\\)", "\\[", "]", "," ],
 
     "literalsRe": [ "\".*\"", "true", "false", "-?\\d*\\.?\\d+", "," ]
 }
