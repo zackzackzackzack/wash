@@ -42,7 +42,6 @@ So, output will look like this.
 
 ```
 My name is John. I am 30 years old.
-(Yes I am old enough.)
 I have 3 kids. They are Daniel, Paul, Mark.
 THEY ARE DANIEL PAUL MARK 
 ```
@@ -54,7 +53,7 @@ For more details on the template syntax, please see [Template Syntax](https://gi
 Wash is safe. You can run untrusted template codes in Wash.
 
 - Wash doew not allow the template code to access external variables, modules, or functions.
-- _(work in progress)_ Wash can restrict the number of iterations or the number of elements in collection.
+- Wash can restrict the number of iterations or the number of elements in collection.
 
 ## References
 
