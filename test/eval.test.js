@@ -44,7 +44,17 @@ describe('eval', function() {
             expect('{{ ("foo (bar)") }}', 'foo (bar)');
             expect('{{ ("foo bar)") }}', 'foo bar)');
 
-            expectError('{{ \'foo\' }}', '');
+            expect('{{ \'foo\' }}', 'foo');
+            expect('{{ (\'foo\') }}', 'foo');
+            expect('{{ \'foo bar\' }}', 'foo bar');
+            expect('{{ \'foo (bar)\' }}', 'foo (bar)');
+            expect('{{ (\'foo (bar)\') }}', 'foo (bar)');
+            expect('{{ (\'foo bar)\') }}', 'foo bar)');
+
+            expect('{{ "1 + 2" }}', '1 + 2');
+            expect('{{ "1 == 2" }}', '1 == 2');
+            expect('{{ \'1 + 2\' }}', '1 + 2');
+            expect('{{ \'1 != 2\' }}', '1 != 2');
         });
 
         describe('syntax error', function() {
