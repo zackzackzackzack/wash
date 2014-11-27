@@ -137,6 +137,14 @@ describe('eval', function() {
             expect('{{ str(a) }}', '{\"b\":{\"c\":\"abc\"}}');
         });
 
+        describe('timestamp', function() {
+            expectError('{{ timestamp() }}', '');
+            expectError('{{ timestamp(123) }}', '');
+            expectError('{{ timestamp("") }}', '');
+            expectError('{{ timestamp("not a time") }}', '');
+
+            expect('{{ timestamp("Wed Nov 26 2014 21:33:24 GMT-0800 (PST)") }}', '1417066404000');
+        });
 
         describe('more edge cases', function() {
             expect('{{ len((foo)) }}', '3');
