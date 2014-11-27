@@ -158,6 +158,13 @@ describe('eval', function() {
             expectError('{{ true !! true }}', '');
         });
 
+        describe('?:', function() {
+            expect('{{ true?1:0 }}', '1');
+            expect('{{ false?1:0 }}', '0');
+            expect('{{ true ? 1 : 0 }}', '1');
+            expect('{{ false ? 1 : 0 }}', '0');
+        });
+
         describe('other no-supports', function() {
             expectError('{{ 1 <> 2 }}', '');
             expectError('{{ 1 !! 2 }}', '');

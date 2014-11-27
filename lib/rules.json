@@ -21,7 +21,9 @@
         { "code": "<", "matchRe": "<(?!=|<|>)" },
         { "code": "||", "matchRe": "\\|\\|" },
         { "code": "&&", "matchRe": "&&" },
-        { "code": "!", "matchRe": "!(?!=)" }
+        { "code": "!", "matchRe": "!(?!=)" },
+        { "code": "?", "matchRe": "\\?" },
+        { "code": ":", "matchRe": "\\:" }
     ],
 
     "additionalTokenSplitters": [ "\".+?\"", "\\(", "\\)", "\\[", "]", "," ],
