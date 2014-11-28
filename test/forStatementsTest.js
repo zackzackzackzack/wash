@@ -1,6 +1,6 @@
 'use strict';
 
-describe('for', function() {
+describe('"for" statements', function() {
     describe('array', function() {
         expect('{% for i in arr %}{{ i.value }}{% endfor %}', '01234');
         expect('{% for i in arr %}{{ i.key }}{% endfor %}', '01234');
@@ -43,20 +43,13 @@ describe('for', function() {
     });
 
     describe('errors', function() {
-        expectError('{% for i in %}{{ i.value }}{% endfor %}', '');
-
-        expectError('{% for in range(4) %}{{ i.value }}{% endfor %}', '');
-
-        expectError('{% for in %}{{ i.value }}{% endfor %}', '');
-
-        expectError('{% for i range(4) %}{{ i.value }}{% endfor %}', '');
-
-        expectError('{% for(i in range(4)) %}{{ i.value }}{% endfor %}', '');
-
-        expectError('{% for (i) in range(4) %}{{ i.value }}{% endfor %}', '');
-
-        expectError('{% for range(3) in range(4) %}{{ i.value }}{% endfor %}', '');
-
-        expectError('{% for i in range(4) %}{% for j in range(3) %}{{ "" + i.value + j.value }}{% endfor %}', '');
+        expectCompileError('{% for i in %}{{ i.value }}{% endfor %}', '');
+        expectCompileError('{% for in range(4) %}{{ i.value }}{% endfor %}', '');
+        expectCompileError('{% for in %}{{ i.value }}{% endfor %}', '');
+        expectCompileError('{% for i range(4) %}{{ i.value }}{% endfor %}', '');
+        expectCompileError('{% for(i in range(4)) %}{{ i.value }}{% endfor %}', '');
+        expectCompileError('{% for (i) in range(4) %}{{ i.value }}{% endfor %}', '');
+        expectCompileError('{% for range(3) in range(4) %}{{ i.value }}{% endfor %}', '');
+        expectCompileError('{% for i in range(4) %}{% for j in range(3) %}{{ "" + i.value + j.value }}{% endfor %}', '');
     });
 });

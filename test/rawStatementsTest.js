@@ -1,6 +1,6 @@
 'use strict';
 
-describe('raw', function() {
+describe('"raw" statement', function() {
     describe('basic', function() {
         expect('{% raw %}foo{% endraw %}', 'foo');
         expect('{% raw %}{{ foo }}{% endraw %}', '{{ foo }}');
@@ -19,8 +19,7 @@ describe('raw', function() {
     });
 
     describe('errors', function() {
-        expectError('{% raw %}foo', '');
-
-        expectError('{% raw %}{% raw %}foo{% endraw %}', '');
+        expectCompileError('{% raw %}foo', '');
+        expectCompileError('{% raw %}{% raw %}foo{% endraw %}', '');
     });
 });

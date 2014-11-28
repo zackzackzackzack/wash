@@ -47,6 +47,8 @@ function expect(source, opts, expected) {
     }
 
     opts = opts || {};
+    opts.throwOnCompileError = true;
+    opts.throwOnRuntimeError = true;
     opts.outputPrecompiledSourceToConsole = false;
     opts.outputErrorToConsole = true;
 
@@ -57,28 +59,55 @@ function expect(source, opts, expected) {
     });
 }
 
-function expectError(source, opts, expected) {
+function expectCompileError(source, opts) {
+    opts = opts || {};
+    opts.throwOnRuntimeError = true;
+
+    it('Wash.render("' + esc(source) + '") expect compile error [throwOnError=true]', function() {
+        opts.throwOnCompileError = true;
+        assert.throws(function() {
+            var wash = new Wash(source, opts);
+            wash.precompile();
+        });
+    });
+
+    it('Wash.render("' + esc(source) + '") expect compile error [throwOnError=false]', function() {
+        opts.throwOnCompileError = false;
+        var wash = new Wash(source, opts);
+        var precompiled = wash.precompile();
+        var actual = precompiled.render(ctx);
+        assert.strictEqual(actual, '');
+    });
+}
+
+function expectRuntimeError(source, opts, expected) {
     if(arguments.length === 2) {
         expected = opts;
         opts = {};
     }
 
-    it('Wash.render("' + esc(source) + '") should throw', function() {
-        opts = opts || {};
+    opts = opts || {};
+    opts.throwOnCompileError = true;
 
-        assert.throws(function() {
-            opts.throwOnError = true;
-            var wash = new Wash(source, opts);
-            wash.render(ctx);
-        });
-
-        opts.throwOnError = false;
+    it('Wash.render("' + esc(source) + '") expect runtime error [throwOnError=true]', function() {
+        opts.throwOnRuntimeError = true;
         var wash = new Wash(source, opts);
-        var actual = wash.render(ctx);
+        var precompiled = wash.precompile();
+        assert.throws(function() {
+            precompiled.render(ctx);
+        });
+    });
+
+    it('Wash.render("' + esc(source) + '") expect runtime error [throwOnError=false]', function() {
+        opts.throwOnRuntimeError = false;
+        var wash = new Wash(source, opts);
+        var precompiled = wash.precompile();
+        var actual = precompiled.render(ctx);
         assert.strictEqual(actual, expected);
     });
 }
 
 global.esc = esc;
 global.expect = expect;
-global.expectError = expectError;
+global.expectCompileError = expectCompileError;
+global.expectRuntimeError = expectRuntimeError;

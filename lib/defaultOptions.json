@@ -1,5 +1,6 @@
 {
-    "throwOnError": false,
+    "throwOnCompileError": false,
+    "throwOnRuntimeError": false,
     "outputPrecompiledSourceToConsole": false,
     "outputErrorToConsole": false,
     "maximumIterations": -1

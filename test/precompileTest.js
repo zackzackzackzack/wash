@@ -2,7 +2,7 @@
 
 var wash = require('../lib/wash');
 
-describe('precompile', function() {
+describe('Precompile', function() {
     it('simplest', function() {
         var source = '{{ foo }}';        
         var ctx = { foo: 'bar' };

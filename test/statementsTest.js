@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Actions', function() {
+describe('Statements', function() {
     expect('{%%}', '');
     expect('{% %}', '');
     expect('{%   %}', '');
@@ -13,7 +13,10 @@ describe('Actions', function() {
     expect('{% 1 + 2 %}', '');
     expect('{% true %}', '');
 
-    expectError('{% local("test") %}', '');
     expect('{% local("test", "foo") %}', '');
     expect('{% local("test", "foo") %}{% foo %}', '');
+
+    expectRuntimeError('{% local("test") %}', '');
+    expectRuntimeError('foo {% local("test") %} bar', 'foo  bar');
+    expectRuntimeError('foo {% join() %} bar', 'foo  bar');
 });

@@ -1,7 +1,16 @@
 'use strict';
 
-describe('eval', function() {
-    describe('empty', function() {
+describe('Basic', function() {
+    describe('empty plain text', function() {
+        expect('', '');
+        expect('     ', '     ');
+        expect('\t\t\t', '\t\t\t');
+        expect('\n\n\n', '\n\n\n');
+        expect('\n\r\n\r\n', '\n\n\n');
+        expect('\n    \t  \n\n   ', '\n    \t  \n\n   ');
+    });
+
+    describe('simple eval', function() {
         expect('{{}}', '');
         expect('{{    }}', '');
         expect('{{\t\t\t}}', '');
@@ -18,7 +27,7 @@ describe('eval', function() {
         expect('{{\nten\n}}', '10');
     });
 
-    describe('constants', function() {
+    describe('literals', function() {
         describe('numbers', function() {
             expect('{{ 10 }}', '10'); 
             expect('{{ (10) }}', '10'); 
@@ -58,9 +67,9 @@ describe('eval', function() {
         });
 
         describe('syntax error', function() {
-            expectError('{{ () }}', '');
-            expectError('{{ true false }}', '');
-            expectError('{{ "foo" "bar" }}', '');
+            expectCompileError('{{ () }}', '');
+            expectCompileError('{{ true false }}', '');
+            expectCompileError('{{ "foo" "bar" }}', '');
         });
     });
     
@@ -106,7 +115,7 @@ describe('eval', function() {
             expect('{{ true == true }}', 'true');
             expect('{{ "foo" == "foo" }}', 'true');
             expect('{{ "foo" == "bar" }}', 'false');
-            expectError('{{ 1 === 2 }}', '');
+            expectCompileError('{{ 1 === 2 }}', '');
         });
 
         describe('==', function() {
@@ -115,57 +124,57 @@ describe('eval', function() {
             expect('{{ true != true }}', 'false');
             expect('{{ "foo" != "foo" }}', 'false');
             expect('{{ "foo" != "bar" }}', 'true');
-            expectError('{{ 1 !== 2 }}', '');
+            expectCompileError('{{ 1 !== 2 }}', '');
         });
 
         describe('>', function() {
             expect('{{ 1 > 2 }}', 'false');
             expect('{{ 2 > 2 }}', 'false');
             expect('{{ 3 > 2 }}', 'true');
-            expectError('{{ 1 >> 2 }}', '');
+            expectCompileError('{{ 1 >> 2 }}', '');
         });
 
         describe('>=', function() {
             expect('{{ 1 >= 2 }}', 'false');
             expect('{{ 2 >= 2 }}', 'true');
             expect('{{ 3 >= 2 }}', 'true');
-            expectError('{{ 1 >>= 2 }}', '');
+            expectCompileError('{{ 1 >>= 2 }}', '');
         });
 
         describe('<', function() {
             expect('{{ 1 < 2 }}', 'true');
             expect('{{ 2 < 2 }}', 'false');
             expect('{{ 3 < 2 }}', 'false');
-            expectError('{{ 1 << 2 }}', '');
+            expectCompileError('{{ 1 << 2 }}', '');
         });
 
         describe('<=', function() {
             expect('{{ 1 <= 2 }}', 'true');
             expect('{{ 2 <= 2 }}', 'true');
             expect('{{ 3 <= 2 }}', 'false');
-            expectError('{{ 1 <== 2 }}', '');
+            expectCompileError('{{ 1 <== 2 }}', '');
         });
 
         describe('&&', function() {
             expect('{{ true && true }}', 'true');
             expect('{{ true && false }}', 'false');
             expect('{{ false && false }}', 'false');
-            expectError('{{ true &&& true }}', '');
+            expectCompileError('{{ true &&& true }}', '');
         });
 
         describe('||', function() {
             expect('{{ true || true }}', 'true');
             expect('{{ true || false }}', 'true');
             expect('{{ false || false }}', 'false');
-            expectError('{{ true ||| true }}', '');
+            expectCompileError('{{ true ||| true }}', '');
         });
 
         describe('!', function() {
             expect('{{ !true }}', 'false');
             expect('{{ !false }}', 'true');
             expect('{{ !!true }}', 'true');
-            expectError('{{ true ! true }}', '');
-            expectError('{{ true !! true }}', '');
+            expectCompileError('{{ true ! true }}', '');
+            expectCompileError('{{ true !! true }}', '');
         });
 
         describe('?:', function() {
@@ -176,8 +185,33 @@ describe('eval', function() {
         });
 
         describe('other no-supports', function() {
-            expectError('{{ 1 <> 2 }}', '');
-            expectError('{{ 1 !! 2 }}', '');
+            expectCompileError('{{ 1 <> 2 }}', '');
+            expectCompileError('{{ 1 !! 2 }}', '');
+        });
+
+        describe('brackets []', function() {
+            // current version does not support brackets "[]"
+            // all tests here should fail (compile error)
+
+            expectCompileError('{{ arr0] }}', '');
+            expectCompileError('{{ arr[0 }}', '');
+            expectCompileError('{{ arr[0]] }}', '');
+            expectCompileError('{{ arr[[0] }}', '');
+
+            expectCompileError('{{ [foo] }}', '');
+            expectCompileError('{{ [arr] }}', '');
+
+            expectCompileError('{{ arr[10] }}', '');
+            expectCompileError('{{ rarr[4] }}', '');
+
+            expectCompileError('{{ arr[two] }}', '');
+            expectCompileError('{{ arr[math.min(1, 2)] }}', '');
+            expectCompileError('{{ arr[arr[3]] }}', '');
+            expectCompileError('{{ rarr[arr[arr[arr[1]]]] }}', '');
+            expectCompileError('{{ rarr[arr[3]] }}', '');
+            expectCompileError('{{ arr[4 - 2] }}', '');
+            expectCompileError('{{ arr[1 * 2] }}', '');
+            expectCompileError('{{ harr[0].foo }}', '');
         });
     });
 });

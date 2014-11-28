@@ -1,6 +1,6 @@
 'use strict';
 
-describe('if', function() {
+describe('"if" statement', function() {
     describe('basic', function() {
         expect('{% if true %}1{% endif %}', '1');
         expect('{% if false %}1{% endif %}', '');
@@ -10,10 +10,10 @@ describe('if', function() {
 
     describe('variable', function() {
         expect('{% if foo %}1{% endif %}', '1');
-        expect('{% if notDefined %}1{% endif %}', '');
+        expectRuntimeError('{% if notDefined %}1{% endif %}', '');
 
         expect('{% if a.b.c %}1{% endif %}', '1');
-        expect('{% if a.b.notDefined %}1{% endif %}', '');
+        expectRuntimeError('{% if a.b.notDefined %}1{% endif %}', '');
     });
 
     describe('string', function() {
@@ -52,10 +52,11 @@ describe('if', function() {
     });
 
     describe('errors', function() {
-        expectError('{% if true %}{% if true %}1{% endif %}', '');
+        expectCompileError('{% if true %}{% if true %}1{% endif %}', '');
+        expectCompileError('{% if %}1{% endif %}', '');
+        expectCompileError('{% if true %}1{% endif what %}', '');
 
-        expectError('{% if %}1{% endif %}', '');
-
-        expectError('{% if true %}1{% endif what %}', '');
+        expect('{% local("foo", true) %}foo = {% if local("foo") %}true{% else %}false{% endif %}', 'foo = true');
+        expectRuntimeError('{% local("foo", true) %}foo = {% if local("oof") %}true{% else %}false{% endif %}', 'foo = ');
     });
 });
