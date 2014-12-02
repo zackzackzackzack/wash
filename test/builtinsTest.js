@@ -133,10 +133,27 @@ describe('Builtins', function() {
     describe('timestamp', function() {
         expect('{{ timestamp("Wed Nov 26 2014 21:33:24 GMT-0800 (PST)") }}', '1417066404000');
 
-        expectRuntimeError('{{ timestamp() }}', '');
         expectRuntimeError('{{ timestamp(123) }}', '');
-        expectRuntimeError('{{ timestamp("") }}', '');
         expectRuntimeError('{{ timestamp("not a time") }}', '');
+    });
+
+    describe('contains', function() {
+        expect('{{ contains(arr, 0) }}', 'true');
+        expect('{{ contains(arr, 1000) }}', 'false');
+        expect('{{ contains("abc", "b") }}', 'true');
+        expect('{{ contains("abc", "bc") }}', 'true');
+        expect('{{ contains("abc", "abc") }}', 'true');
+        expect('{{ contains("abc", "d") }}', 'false');
+        expect('{{ contains("abc", "abcd") }}', 'false');
+    });
+
+    describe('array', function() {
+        expect('{{ array() }}', ''); // javascript default array string rep
+        expect('{{ array(1) }}', '1'); // javascript default array string rep
+        expect('{{ array(1,2,3) }}', '1,2,3'); // javascript default array string rep
+        expect('{{ str(array()) }}', '[]'); // JSON array string rep
+        expect('{{ str(array(1)) }}', '[1]'); // JSON array string rep
+        expect('{{ str(array(1,2,3)) }}', '[1,2,3]'); // JSON array string rep
     });
 
     describe('math', function() {
