@@ -4,14 +4,14 @@
 var wash = require('../lib/wash'),
     fs = require('fs');
 
-var inputFile = process.argv[2];
-var contextJsonFile = process.argv[3];
-if(!inputFile || !contextJsonFile) {
-    console.error('usage: wash inputFile contextJsonFile');
-    process.exit(2);
-}
+var argv = require('yargs').
+    usage('usage: $0 \'inputTextOrFile\' \'contextJsonOrFile\' [-f]').
+    example('$0 \'hello, {{name}}\' \'{"name": "Daniel"}\'', '').
+    example('$0 input.txt context.json -f', '').
+    demand(2).
+    describe('f', 'if used, input and context are read from files').argv;
 
-var inputSource = fs.readFileSync(inputFile, { encoding: 'utf8' });
-var context = JSON.parse(fs.readFileSync(contextJsonFile, { encoding: 'utf8' }));
+var inputText = argv.f ? fs.readFileSync(argv._[0], { encoding: 'utf8' }) : argv._[0];
+var context = JSON.parse(argv.f ? fs.readFileSync(argv._[1], { encoding: 'utf8' }) : argv._[1]);
 
-process.stdout.write(wash.render(inputSource, context));
+process.stdout.write(wash.render(inputText, context));
